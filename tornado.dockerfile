@@ -1,28 +1,13 @@
-FROM ubuntu:16.04
+FROM python:3.6
 
-MAINTAINER pyclear <cappyclear@gmail.com>
-ENV DEBIAN_FRONTEND noninteractive
+WORKDIR /usr/src/app
 
-RUN echo 'deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse\n\
-    deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse\n\
-    deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse\n\
-    deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse\n\
-    deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse\n\
-    deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse\n\
-    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse\n\
-    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse\n\
-    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse\n\
-    deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse\n\
-    ' > /etc/apt/sources.list
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt-get update && apt-get install python-pip  python-dev sudo -yq
-RUN useradd -ms /bin/bash pyclear
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pymongo tornado
-RUN apt-get remove python-pip -y && apt-get autoremove -y
-RUN echo "pyclear ALL=(ALL) NOPASSWD: ALL"  >> /etc/sudoers
-RUN echo "pyclear:pyclear" | chpasswd
-USER pyclear
-WORKDIR /home/pyclear
-RUN cd /home/pyclear
+RUN cd /usr/src/app
 
-EXPOSE 22 80 5000
+# expose port
+EXPOSE 8888 22
+
+CMD [ "python", "./server.py" ]
