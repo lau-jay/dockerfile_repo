@@ -1,5 +1,11 @@
-FROM mysql:5.6
+# http://blog.csdn.net/yitaidn/article/details/64988272
+[client]
+default-character-set = utf8mb4
 
+[mysql]
+default-character-set = utf8mb4
 
-COPY utf8mb4.cnf /etc/mysql/conf.d/
-ENV LANG C.UTF-8
+[mysqld]
+character-set-client-handshake = FALSE
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
