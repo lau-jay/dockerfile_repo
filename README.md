@@ -1,3 +1,2 @@
 # dockerfile_repo
-dockerfiles
-about docker shell
+dockerfiles and docker shell
